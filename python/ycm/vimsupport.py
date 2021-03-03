@@ -369,7 +369,11 @@ def _OpenLocationList( focus = False, autoclose = False ):
 def SetQuickFixList( quickfix_list ):
   """Populate the quickfix list and open it. List should be in qflist format:
   see ":h setqflist" for details."""
+  #  print(quickfix_list)
   vim.eval( f'setqflist( { json.dumps( quickfix_list ) } )' )
+  if len(quickfix_list) == 0 :
+    vim.command( 'botright cclose' )
+
 
 
 def OpenQuickFixList( focus = False, autoclose = False ):
@@ -394,12 +398,18 @@ def OpenQuickFixList( focus = False, autoclose = False ):
 def ComputeFittingHeightForCurrentWindow():
   current_window = vim.current.window
   if not current_window.options[ 'wrap' ]:
-    return len( vim.current.buffer )
+    return _FittingHeight(len( vim.current.buffer ))
 
   window_width = current_window.width
   fitting_height = 0
   for line in vim.current.buffer:
     fitting_height += len( line ) // window_width + 1
+  return _FittingHeight(fitting_height)
+
+
+def _FittingHeight(fitting_height):
+  if fitting_height < 10:
+      fitting_height = 10
   return fitting_height
 
 
