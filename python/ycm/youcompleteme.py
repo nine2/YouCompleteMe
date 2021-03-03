@@ -825,7 +825,8 @@ class YouCompleteMe:
       return
 
     if self._user_options[ 'open_loclist_on_ycm_diags' ]:
-      vimsupport.OpenLocationList( focus = True )
+      #  vimsupport.OpenLocationList( focus = True )
+      vimsupport.OpenQuickFixList( focus = True )
 
 
   def _AddSyntaxDataIfNeeded( self, extra_data ):

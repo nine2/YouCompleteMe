@@ -329,17 +329,23 @@ def GetWindowsForBufferNumber( buffer_number ):
 def SetLocationListsForBuffer( buffer_number, diagnostics ):
   """Populate location lists for all windows containing the buffer with number
   |buffer_number|. See SetLocationListForWindow for format of diagnostics."""
-  for window in GetWindowsForBufferNumber( buffer_number ):
-    SetLocationListForWindow( window.number, diagnostics )
+  SetQuickFixList( diagnostics )
+  #  for window in GetWindowsForBufferNumber( buffer_number ):
+  #    SetLocationListForWindow( window.number, diagnostics )
 
 
 def SetLocationListForWindow( window_number, diagnostics ):
   """Populate the location list with diagnostics. Diagnostics should be in
   qflist format; see ":h setqflist" for details."""
-  vim.eval( f'setloclist( { window_number }, { json.dumps( diagnostics ) } )' )
+  # vim.eval( f'setloclist( { window_number }, { json.dumps( diagnostics ) } )')
+  SetQuickFixList(diagnostics)
 
 
 def OpenLocationList( focus = False, autoclose = False ):
+    OpenQuickFixList(focus, autoclose)
+
+
+def _OpenLocationList( focus = False, autoclose = False ):
   """Open the location list to the bottom of the current window with its
   height automatically set to fit all entries. This behavior can be overridden
   by using the YcmLocationOpened autocommand. When focus is set to True, the
